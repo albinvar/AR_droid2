@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -8,6 +8,37 @@ const World = dynamic(() => import("../ui/globe").then((m) => m.World), {
 });
 
 export function GlobeDemo() {
+  const [displayText, setDisplayText] = useState("AR-DROID");
+  const [showBlueDot, setShowBlueDot] = useState(false);
+  const [showLargeGlobe, setShowLargeGlobe] = useState(false);
+  const [showPhoneEmbedding, setShowPhoneEmbedding] = useState(true);
+  const [showDescription, setShowDescription] = useState(false);
+
+  useEffect(() => {
+    const timeout1 = setTimeout(() => {
+      setDisplayText("The Earth");
+    }, 2000);
+
+    const timeout2 = setTimeout(() => {
+      setShowBlueDot(true);
+    }, 4000);
+
+    const timeout3 = setTimeout(() => {
+      setShowLargeGlobe(true);
+    }, 5000);
+
+    const timeout4 = setTimeout(() => {
+      setShowPhoneEmbedding(false);
+      setShowDescription(true);
+    }, 6500); // Adjusted timing for phone embedding disappearance
+
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
+      clearTimeout(timeout4);
+    };
+  }, []);
   const globeConfig = {
     pointSize: 4,
     globeColor: "#062056",
@@ -395,44 +426,83 @@ export function GlobeDemo() {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center py-20 md:h-screen h-[30rem] dark:bg-black bg-[#aec3b0] relative w-full">
-  <div className="relative z-10 w-full max-w-md mx-auto">
-    <div className="absolute inset-0 z-10">
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 1,
-          delay: 0.5,
-        }}
-        className="text-center space-y-4"
-      >
-        <h1 className="text-xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 animate-text">
-          AR-DROID
-        </h1>
-        <div className="text-base md:text-lg font-normal text-neutral-700 dark:text-neutral-200 max-w-md mx-auto animate-text">
-          This globe AI is interactive and customizable. Have fun with it, and
-          don&apos;t forget to share it. :
-        </div>
-      </motion.div>
-    </div>
-    <div className="w-full mx-auto p-4 rounded-3xl shadow-lg bg-white dark:bg-gray-800">
-      <div className="relative w-full pb-[200%]">
-        <div className="absolute inset-0 rounded-3xl overflow-hidden">
-          <div className="w-full h-full">
+    <div className="flex flex-row items-center justify-center py-20 md:h-screen h-[30rem] dark:bg-black bg-[#aec3b0] relative w-full">
+      <div className="max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
+        {/* Phone embedding */}
+        {showPhoneEmbedding && (
+          <motion.div
+            initial={{ opacity: 1, x: 0 }}
+            animate={{
+              opacity: showLargeGlobe ? 0 : 1,
+              x: showLargeGlobe ? -400 : 0,
+            }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="w-36 h-64 bg-blue-500 rounded-lg flex items-center justify-center">
+              <p className="text-white text-lg font-bold">{displayText}</p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Blue dot */}
+        {showBlueDot && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="w-36 h-64 bg-blue-500 rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 bg-blue-600 rounded-full" />
+            </div>
+          </motion.div>
+        )}
+
+        {/* Large globe */}
+        {showLargeGlobe && (
+          <motion.div
+            initial={{ opacity: 0, x: -400 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 2 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
             <World data={sampleArcs} globeConfig={globeConfig} />
-          </div>
-        </div>
+          </motion.div>
+        )}
+
+       {/* Description */}
+{showDescription && (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1, delay: 1 }}
+    className="absolute top-1/2 transform -translate-y-1/2 right-10 text-white text-lg"
+  >
+    <div className="bg-snow-900 bg-opacity-20 p-6 rounded-lg shadow-xl text-center">
+  <h1 className="text-4xl font-bold mb-4"> {/* Updated */}
+    <span className="text-red-500">A</span> {/* Updated */}
+    <span className="text-orange-500">R</span> {/* Updated */}
+    -{/* Updated */}
+    <span className="text-yellow-500">D</span> {/* Updated */}
+    <span className="text-green-500">R</span> {/* Updated */}
+    <span className="text-blue-500">O</span> {/* Updated */}
+    <span className="text-indigo-500">I</span> {/* Updated */}
+    <span className="text-violet-500">D</span> {/* Updated */}
+  </h1>
+  <p className="text-lg text-sm avallon">
+    An AR-based Android app designed for dyslexic students, helping
+    them learn more effectively and engagingly.
+  </p>
+  <p className="mt-4 text-sm italic">
+    Made with love and innovation.
+  </p>
+</div>
+
+  </motion.div>
+)}
+
       </div>
     </div>
-  </div>
-  <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black z-0" />
-</div>
   );
 }

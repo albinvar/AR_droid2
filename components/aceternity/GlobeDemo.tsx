@@ -395,35 +395,44 @@ export function GlobeDemo() {
   ];
 
   return (
-    <div className="flex flex-row items-center justify-center py-20 md:h-screen h-[30rem]  dark:bg-black bg-[#aec3b0] relative w-full">
-      <div className="max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 1,
-          }}
-          className="div"
-        >
-          <h2 className="text-center text-xl md:text-4xl font-bold text-black dark:text-white">
-            We find AI WorldWide
-          </h2>
-          <div className="text-center text-base md:text-lg font-normal text-neutral-700 dark:text-neutral-200 max-w-md mt-2 mx-auto">
-            This globe AI is interactive and customizable. Have fun with it, and
-            don&apos;t forget to share it. :
+    <div className="flex flex-col items-center justify-center py-20 md:h-screen h-[30rem] dark:bg-black bg-[#aec3b0] relative w-full">
+  <div className="relative z-10 w-full max-w-md mx-auto">
+    <div className="absolute inset-0 z-10">
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 20,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 1,
+          delay: 0.5,
+        }}
+        className="text-center space-y-4"
+      >
+        <h1 className="text-xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 animate-text">
+          AR-DROID
+        </h1>
+        <div className="text-base md:text-lg font-normal text-neutral-700 dark:text-neutral-200 max-w-md mx-auto animate-text">
+          This globe AI is interactive and customizable. Have fun with it, and
+          don&apos;t forget to share it. :
+        </div>
+      </motion.div>
+    </div>
+    <div className="w-full mx-auto p-4 rounded-3xl shadow-lg bg-white dark:bg-gray-800">
+      <div className="relative w-full pb-[200%]">
+        <div className="absolute inset-0 rounded-3xl overflow-hidden">
+          <div className="w-full h-full">
+            <World data={sampleArcs} globeConfig={globeConfig} />
           </div>
-        </motion.div>
-        <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black  z-40" />
-        <div className="absolute w-full -bottom-20 h-72 md:h-full z-10">
-          <World data={sampleArcs} globeConfig={globeConfig} />;
         </div>
       </div>
     </div>
+  </div>
+  <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black z-0" />
+</div>
   );
 }
